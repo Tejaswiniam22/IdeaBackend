@@ -45,12 +45,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
-            log.info("Attempting to register user: {}", user.getUsername());
+            log.info("Register attempt for user: {}", user.getUsername());
             String message = userService.register(user);
             log.info("User registered successfully: {}", user.getUsername());
             return ResponseEntity.ok(Map.of("message", message));
         } catch (IllegalStateException e) {
-            log.warn("User registration failed: {}", e.getMessage());
+            log.warn("Registration failed for user {}: {}", user.getUsername(), e.getMessage());
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         }
     }
@@ -62,6 +62,7 @@ public class AuthController {
         String username = req.get("username");
         try {
             log.info("Login attempt for user: {}", username);
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, req.get("password"))
             );
@@ -76,28 +77,40 @@ public class AuthController {
             refreshTokenCookie.setMaxAge(604800);
             response.addCookie(refreshTokenCookie);
 
-            String ipAddress = request.getRemoteAddr();
-            String userAgent = request.getHeader("User-Agent");
-            String browser = request.getHeader("X-Browser");
-            String os = request.getHeader("X-OS");
-            String device = request.getHeader("X-Device");
+            // Collect login details
+            Map<String, Object> logEntry = createLoginLog(username, request);
 
-            Map<String, Object> logEntry = new LinkedHashMap<>();
-            logEntry.put("username", username);
-            logEntry.put("ip", ipAddress);
-            logEntry.put("browser", browser != null ? browser : userAgent);
-            logEntry.put("os", os);
-            logEntry.put("device", device);
-            logEntry.put("timestamp", new Date().toString());
-
+            // Save to JSON file
             saveLoginLog(logEntry);
 
-            log.info("Login successful for user: {}", username);
+            log.info("Login successful for user: {} | IP: {} | Browser: {} | Device: {}",
+                    username, logEntry.get("ip"), logEntry.get("browser"), logEntry.get("device"));
+
             return ResponseEntity.ok(Map.of("accessToken", accessToken, "refreshToken", refreshToken.getToken()));
         } catch (BadCredentialsException e) {
-            log.warn("Login failed for user: {} - Invalid credentials", username);
+            log.warn("Login failed for user {}: Invalid credentials", username);
             return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
+        } catch (Exception e) {
+            log.error("Unexpected error during login for user {}: {}", username, e.getMessage(), e);
+            return ResponseEntity.status(500).body(Map.of("error", "Internal server error"));
         }
+    }
+
+    private Map<String, Object> createLoginLog(String username, HttpServletRequest request) {
+        String ipAddress = request.getRemoteAddr();
+        String userAgent = request.getHeader("User-Agent");
+        String browser = request.getHeader("X-Browser");
+        String os = request.getHeader("X-OS");
+        String device = request.getHeader("X-Device");
+
+        Map<String, Object> logEntry = new LinkedHashMap<>();
+        logEntry.put("username", username);
+        logEntry.put("ip", ipAddress);
+        logEntry.put("browser", browser != null ? browser : userAgent);
+        logEntry.put("os", os);
+        logEntry.put("device", device);
+        logEntry.put("timestamp", new Date().toString());
+        return logEntry;
     }
 
     private void saveLoginLog(Map<String, Object> logEntry) {
@@ -114,9 +127,9 @@ public class AuthController {
 
             logs.add(logEntry);
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, logs);
-            log.info("Login log saved: {}", logEntry);
+            log.info("Login log saved to JSON for user: {}", logEntry.get("username"));
         } catch (Exception e) {
-            log.error("Failed to save login log: {}", e.getMessage(), e);
+            log.error("Failed to save login log to JSON: {}", e.getMessage(), e);
         }
     }
 
