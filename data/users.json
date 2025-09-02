@@ -1,0 +1,57 @@
+[ {
+  "username" : "jim",
+  "password" : "$2a$10$NLr1obx7dQOthGuLWuC/Ge8k1pBk0ezCjGjE/MFjMwmUY5FEbzNBq",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "josh",
+  "password" : "$2a$10$w.GR6SKTTZr2yEibvz4BiOyY6QSiwLcVSvjGJsHQiFG2EMUL7EN8G",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "joe",
+  "password" : "$2a$10$IN6jy8Udxmu5R.rhwTuO9eFwAyms2Rq2EZPFWaOmNjA/2iqb1ZIs2",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "jin",
+  "password" : "$2a$10$Hi3FYUYYswhaNHZvr5ljh.UZ8GvVf1NAq8sVmJG0OrCBV3j36D0fq",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "Teju",
+  "password" : "$2a$10$lpsvdCy905R0o1RV7swpIeF9sJq2RE6JcraWf0O.awiXixHVAiSde",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "Tejaswini",
+  "password" : "$2a$10$6xcazUsrYZoaf6prQppQRO95eKW53R2yCLTNoUf96i4x0RHl3VR9y",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "Tejaswini A M",
+  "password" : "$2a$10$yCgRWn6ZAWhiY.4DjytTkeEE8eh5m5LxqhP/JllG/y/OsGqsnNXp2",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+}, {
+  "username" : "Rahul",
+  "password" : "$2a$10$cI0fUu/qhhv9zVuf/cwaouy4Z4UilM1NZPtF6QDRAxq3A5tPLvGPq",
+  "enabled" : true,
+  "accountNonExpired" : true,
+  "credentialsNonExpired" : true,
+  "accountNonLocked" : true
+} ]
